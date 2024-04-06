@@ -24,6 +24,8 @@ const timer = document.getElementById('timer');
 const timerFoco = 1500;
 const timerDescansoCurto = 300;
 const timerDescansoLongo = 900;
+let tempoDecorridoEmSegundos = 5;
+let intervaloId = null;
 
 /* Sons do site */
 const somFoco = new Audio('/sons/luna-rise-part-one.mp3');
@@ -31,6 +33,7 @@ somFoco.loop = true;
 const pause = new Audio('/sons/pause.mp3');
 const play = new Audio('/sons/play.wav');
 const beep = new Audio('/sons/beep.mp3');
+beep.currentTime = 4;
 
 /**
  * Modifica o contexto e atualiza o HTML e banner de acordo com o parâmetro.
@@ -79,12 +82,42 @@ btnFoco.addEventListener('click', () => {
 });
 
 btnComecar.addEventListener('click', () => {
-
+    iniciarOuPausar();
     btnComecar.innerHTML = btnComecar.innerText === 'Começar' ? 
     `<img class="app__card-primary-butto-icon" src="/imagens/pause.png" alt=""><span>Pausar</span>` : 
     `<img class="app__card-primary-butto-icon" src="/imagens/play_arrow.png" alt=""><span>Começar</span>`;
+
+
 });
 
 btnMusica.addEventListener('change', () => {
-    somFoco.paused ? somFoco.play() : somFoco.pause();
+    somFoco.paused ? somFoco.play() : somFoco.pause;
 });
+
+/**
+ * Executa a função de contagem regressiva a cada 1 segundo (1000 milissegundos).
+ */
+function iniciarOuPausar() {
+    if (intervaloId) {
+        pause.play();
+        parar();
+        return;
+    }
+    play.play();
+    intervaloId = setInterval(contagemRegressiva, 1000);
+}
+
+const contagemRegressiva = () => {
+    if(tempoDecorridoEmSegundos <= 0){
+        beep.play();
+        parar();
+        return;
+    }
+    tempoDecorridoEmSegundos -= 1;
+    console.log('Temporizador: ' + tempoDecorridoEmSegundos);
+}
+
+function parar() {
+    clearInterval(intervaloId);
+    intervaloId = null;
+}
