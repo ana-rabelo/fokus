@@ -29,11 +29,11 @@ let intervaloId = null;
 mostrarTempo();
 
 /* Sons do site */
-const somFoco = new Audio('/sons/luna-rise-part-one.mp3');
+const somFoco = new Audio('./sons/luna-rise-part-one.mp3');
 somFoco.loop = true;
-const pause = new Audio('/sons/pause.mp3');
-const play = new Audio('/sons/play.wav');
-const beep = new Audio('/sons/beep.mp3');
+const pause = new Audio('./sons/pause.mp3');
+const play = new Audio('./sons/play.wav');
+const beep = new Audio('./sons/beep.mp3');
 beep.currentTime = 4;
 
 
@@ -46,7 +46,7 @@ function alterarContexto(contexto) {
     mostrarTempo();
 
     htmlContexto.setAttribute('data-contexto', contexto)
-    bannerImg.setAttribute('src', `/imagens/${contexto}.png`)
+    bannerImg.setAttribute('src', `./imagens/${contexto}.png`)
     switch (contexto) {
         case "foco":
             bannerTitulo.innerHTML = `
@@ -90,8 +90,8 @@ btnFoco.addEventListener('click', () => {
 btnComecar.addEventListener('click', () => {
     iniciarOuPausar();
     btnComecar.innerHTML = btnComecar.innerText === 'Começar' ? 
-    `<img class="app__card-primary-butto-icon" src="/imagens/pause.png" alt=""><span>Pausar</span>` : 
-    `<img class="app__card-primary-butto-icon" src="/imagens/play_arrow.png" alt=""><span>Começar</span>`;
+    `<img class="app__card-primary-butto-icon" src="./imagens/pause.png" alt=""><span>Pausar</span>` : 
+    `<img class="app__card-primary-butto-icon" src="./imagens/play_arrow.png" alt=""><span>Começar</span>`;
 
 
 });
