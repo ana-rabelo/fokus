@@ -96,10 +96,13 @@ btnComecar.addEventListener('click', () => {
 
 });
 
-btnMusica.addEventListener('change', () => {
-    somFoco.paused ? somFoco.play() : somFoco.pause;
+btnMusica.addEventListener('click', () => {
+    somFoco.paused ? somFoco.play() : somFoco.pause();
 });
 
+/** 
+ * Mostra o tempo no formato MM:SS.
+ */
 function mostrarTempo() {
     const tempo = new Date(tempoDecorridoEmSegundos * 1000);
     const tempoFormatado = tempo.toLocaleTimeString('pt-Br', {minute: '2-digit', second: '2-digit'});
@@ -119,6 +122,9 @@ function iniciarOuPausar() {
     intervaloId = setInterval(contagemRegressiva, 1000);
 }
 
+/**
+ * Faz a conta regressiva do tempo e para quando chegar a 0.
+ */
 const contagemRegressiva = () => {
     if(tempoDecorridoEmSegundos <= 0){
         beep.play();
@@ -129,6 +135,9 @@ const contagemRegressiva = () => {
     mostrarTempo();
 }
 
+/**
+ * Para a contagem regressiva.
+ */
 function parar() {
     clearInterval(intervaloId);
     intervaloId = null;
