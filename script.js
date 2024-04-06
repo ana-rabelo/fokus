@@ -24,8 +24,9 @@ const timer = document.getElementById('timer');
 const timerFoco = 1500;
 const timerDescansoCurto = 300;
 const timerDescansoLongo = 900;
-let tempoDecorridoEmSegundos = 5;
+let tempoDecorridoEmSegundos = timerFoco;
 let intervaloId = null;
+mostrarTempo();
 
 /* Sons do site */
 const somFoco = new Audio('/sons/luna-rise-part-one.mp3');
@@ -35,12 +36,14 @@ const play = new Audio('/sons/play.wav');
 const beep = new Audio('/sons/beep.mp3');
 beep.currentTime = 4;
 
+
 /**
  * Modifica o contexto e atualiza o HTML e banner de acordo com o parâmetro.
  * @param {string} contexto - O novo contexto a ser modificado.
  */
 function alterarContexto(contexto) {
     botoes.forEach(botao => {botao.classList.remove('active');});
+    mostrarTempo();
 
     htmlContexto.setAttribute('data-contexto', contexto)
     bannerImg.setAttribute('src', `/imagens/${contexto}.png`)
@@ -70,14 +73,17 @@ function alterarContexto(contexto) {
 }
 
 btnDescansoCurto.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = timerDescansoCurto;
     alterarContexto('descanso-curto');
 }); 
 
 btnDescansoLongo.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = timerDescansoLongo;
     alterarContexto('descanso-longo');
 });
 
 btnFoco.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = timerFoco;
     alterarContexto('foco');
 });
 
@@ -93,6 +99,12 @@ btnComecar.addEventListener('click', () => {
 btnMusica.addEventListener('change', () => {
     somFoco.paused ? somFoco.play() : somFoco.pause;
 });
+
+function mostrarTempo() {
+    const tempo = new Date(tempoDecorridoEmSegundos * 1000);
+    const tempoFormatado = tempo.toLocaleTimeString('pt-Br', {minute: '2-digit', second: '2-digit'});
+    timer.innerHTML = `${tempoFormatado}`;
+}
 
 /**
  * Executa a função de contagem regressiva a cada 1 segundo (1000 milissegundos).
@@ -114,7 +126,7 @@ const contagemRegressiva = () => {
         return;
     }
     tempoDecorridoEmSegundos -= 1;
-    console.log('Temporizador: ' + tempoDecorridoEmSegundos);
+    mostrarTempo();
 }
 
 function parar() {
