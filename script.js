@@ -1,3 +1,5 @@
+/* Todos os botões */
+const botoes = document.querySelectorAll('.app__card-button');
 /* Botão para escolher o temporizador de “Foco” */
 const btnFoco = document.querySelector('.app__card-button--foco');
 /* Botão para escolher o temporizador de “Descanso Curto” */
@@ -23,11 +25,20 @@ const timerFoco = 1500;
 const timerDescansoCurto = 300;
 const timerDescansoLongo = 900;
 
+/* Sons do site */
+const somFoco = new Audio('/sons/luna-rise-part-one.mp3');
+somFoco.loop = true;
+const pause = new Audio('/sons/pause.mp3');
+const play = new Audio('/sons/play.wav');
+const beep = new Audio('/sons/beep.mp3');
+
 /**
  * Modifica o contexto e atualiza o HTML e banner de acordo com o parâmetro.
  * @param {string} contexto - O novo contexto a ser modificado.
  */
 function alterarContexto(contexto) {
+    botoes.forEach(botao => {botao.classList.remove('active');});
+
     htmlContexto.setAttribute('data-contexto', contexto)
     bannerImg.setAttribute('src', `/imagens/${contexto}.png`)
     switch (contexto) {
@@ -36,16 +47,20 @@ function alterarContexto(contexto) {
             Otimize sua produtividade,<br>
                 <strong class="app__title-strong">mergulhe no que importa.</strong>
             `
+            btnFoco.classList.add('active');
             break;
         case "descanso-curto":
             bannerTitulo.innerHTML = `
             Que tal dar uma respirada? <strong class="app__title-strong">Faça uma pausa curta!</strong>
             ` 
+            
+            btnDescansoCurto.classList.add('active');
             break;
         case "descanso-longo":
             bannerTitulo.innerHTML = `
             Hora de voltar à superfície.<strong class="app__title-strong"> Faça uma pausa longa.</strong>
             `
+            btnDescansoLongo.classList.add('active');
         default:
             break;
     }
@@ -64,7 +79,12 @@ btnFoco.addEventListener('click', () => {
 });
 
 btnComecar.addEventListener('click', () => {
+
     btnComecar.innerHTML = btnComecar.innerText === 'Começar' ? 
     `<img class="app__card-primary-butto-icon" src="/imagens/pause.png" alt=""><span>Pausar</span>` : 
     `<img class="app__card-primary-butto-icon" src="/imagens/play_arrow.png" alt=""><span>Começar</span>`;
+});
+
+btnMusica.addEventListener('change', () => {
+    somFoco.paused ? somFoco.play() : somFoco.pause();
 });
