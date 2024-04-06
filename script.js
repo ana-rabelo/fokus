@@ -23,21 +23,44 @@ const timerFoco = 1500;
 const timerDescansoCurto = 300;
 const timerDescansoLongo = 900;
 
+/**
+ * Modifica o contexto e atualiza o HTML e banner de acordo com o parâmetro.
+ * @param {string} contexto - O novo contexto a ser modificado.
+ */
+function alterarContexto(contexto) {
+    htmlContexto.setAttribute('data-contexto', contexto)
+    bannerImg.setAttribute('src', `/imagens/${contexto}.png`)
+    switch (contexto) {
+        case "foco":
+            bannerTitulo.innerHTML = `
+            Otimize sua produtividade,<br>
+                <strong class="app__title-strong">mergulhe no que importa.</strong>
+            `
+            break;
+        case "descanso-curto":
+            bannerTitulo.innerHTML = `
+            Que tal dar uma respirada? <strong class="app__title-strong">Faça uma pausa curta!</strong>
+            ` 
+            break;
+        case "descanso-longo":
+            bannerTitulo.innerHTML = `
+            Hora de voltar à superfície.<strong class="app__title-strong"> Faça uma pausa longa.</strong>
+            `
+        default:
+            break;
+    }
+}
+
 btnDescansoCurto.addEventListener('click', () => {
-    htmlContexto.setAttribute('data-contexto', 'descanso-curto');
-    bannerImg.setAttribute('src', './imagens/descanso-curto.png');
-    /* OU 
-    bannerImg.src = './imagens/descanso-curto.png'; */
+    alterarContexto('descanso-curto');
 }); 
 
 btnDescansoLongo.addEventListener('click', () => {
-    htmlContexto.setAttribute('data-contexto', 'descanso-longo');
-    bannerImg.setAttribute('src', './imagens/descanso-longo.png');
+    alterarContexto('descanso-longo');
 });
 
 btnFoco.addEventListener('click', () => {
-    htmlContexto.setAttribute('data-contexto', 'foco');
-    bannerImg.setAttribute('src', './imagens/foco.png');
+    alterarContexto('foco');
 });
 
 btnComecar.addEventListener('click', () => {
