@@ -38,7 +38,7 @@ body {
     min-height: 100vh;
     background: url("./imagens/pattern.png");
     background-size: cover;
-    background-position: 0;
+    background-position: center;
     background-repeat: no-repeat;
 }
 
