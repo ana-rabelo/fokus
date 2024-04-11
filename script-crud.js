@@ -8,8 +8,10 @@ const ulTasks = document.querySelector('.app__section-task-list');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-function updateTask () {
+function updateTasks () {
     localStorage.setItem('tasks', JSON.stringify(tasks));
+    ulTasks.innerHTML = '';
+    tasks.forEach(task => createTask(task)); 
 }
 
 function setId(taskId) {
@@ -30,7 +32,7 @@ function clearForm() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    tasks.forEach(task => createTask(task));  
+    updateTasks();
 });
 
 function createTask(task) {
@@ -88,7 +90,7 @@ formAddTask.addEventListener('submit', (event) => {
 
     const taskId = document.getElementById('id');
 
-    if (taskId.value === null) {
+    if (taskId.value === "null") {
         console.log('Adicionando tarefa');
         const task = {
             id: tasks.length + 1,
@@ -104,14 +106,14 @@ formAddTask.addEventListener('submit', (event) => {
         não têm tempo de expiração, os dados do sessionStorage são apagados quando a sessão da página termina */
             
         createTask(task);
+        clearForm();
         
-        formAddTask.classList.add('hidden');
-        textarea.value = '';
     } else {
-        console.log("🚀 ~ formAddTask.addEventListener ~ taskId:", taskId.value)
-
-        console.log('Editando tarefa');
+        const task = tasks.find(task => task.id === parseInt(taskId.value));
+        task.description = textarea.value;
         
+        updateTasks();
+        clearForm();         
     }
 });
 
