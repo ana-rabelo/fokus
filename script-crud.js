@@ -4,22 +4,24 @@ const btnCancelTask = document.querySelector('.app__form-footer__button--cancel'
 const btnsaveTask = document.querySelector('.app__form-footer__button--confirm');
 const textarea = document.querySelector('.app__form-textarea');
 const ulTasks = document.querySelector('.app__section-task-list');
-const labelForm = document.querySelector('.app__form-label');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-const id = tasks.length;
+
+function updateTask () {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function clearForm() {
+    formAddTask.classList.add('hidden');
+    textarea.value = '';
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     tasks.forEach(task => createTask(task));
 });
 
-function editTask(task) {
-    labelForm.textContent = 'Editando Tarefa';
-    formAddTask.classList.remove('hidden');
-    textarea.value = task.description;
-}
-
 function createTask(task) {
+
     const li = document.createElement('li');
     li.classList.add('app__section-task-list-item');    
     
@@ -40,57 +42,45 @@ function createTask(task) {
     button.appendChild(imageBtn);
     button.classList.add('app_button-edit');
 
-    button.onclick = () => editTask(task);
-
+    button.onclick = () => {
+        const newDescription = prompt("Qual é o novo nome da tarefa?");
+        if (newDescription) {
+            p.textContent = newDescription;
+            task.description = newDescription;
+            updateTask();
+        }
+    };
+    
     li.appendChild(svg);
     li.appendChild(p);
     li.appendChild(button);
-    
+        
     ulTasks.appendChild(li);
 }
 
 btnAddTask.addEventListener('click', () => {
-    labelForm.textContent = 'Adicionando Tarefa';
-    textarea.value = '';
     formAddTask.classList.remove('hidden');
 });
+
+btnCancelTask.addEventListener('click', clearForm);
 
 formAddTask.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    if (labelForm.textContent === 'Editando Tarefa') {
-        const taskEdit = {
-            id: id,
-            description: textarea.value
-        };
-
-        tasks = JSON.parse(localStorage.getItem('tasks', JSON.stringify(tasks)));
-        tasks.map((item) => {
-            if (item.id === taskEdit.id) {
-                item.description = taskEdit.description;
-            }
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        });
-
-        const paragrafo = document.querySelector('.app__section-task-list-item-description')
-        paragrafo.textContent = taskEdit.description;
-
-    } else {
-        id++;
-        const task = {
-            id: id,
-            description: textarea.value,
-            completed: false
-        };
-
-        tasks.push(task);
-
-        /* Para persistir os dados entre sessões */
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        /* O localStorage é similar ao sessionStorage, com a diferença de que enquanto os dados do localStorage 
-        não têm tempo de expiração, os dados do sessionStorage são apagados quando a sessão da página termina */
-        createTask(task);
-    }
+    const task = {
+        id: tasks.length + 1,
+        description: textarea.value,
+        completed: false
+    };
+    
+    tasks.push(task);
+    
+    /* Para persistir os dados entre sessões */
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    /* O localStorage é similar ao sessionStorage, com a diferença de que enquanto os dados do localStorage 
+    não têm tempo de expiração, os dados do sessionStorage são apagados quando a sessão da página termina */
+        
+    createTask(task);
     
     formAddTask.classList.add('hidden');
     textarea.value = '';
