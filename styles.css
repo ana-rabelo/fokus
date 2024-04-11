@@ -260,7 +260,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .app__section-task-header__li {
-    margin: 1.6rem 0;
+    margin-bottom: 1rem;
 }
 
 .app__section-task-header__li__button {
@@ -273,7 +273,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: flex-start;
     color: #fff;
-    gap: 0.8rem;
+    gap: 1.5rem;
 }
 
 /* fim - dropdown */
