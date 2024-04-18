@@ -2,6 +2,7 @@ const btnAddTask = document.querySelector('.app__button--add-task');
 const formAddTask = document.querySelector('.app__form-add-task');
 const formLabel = document.querySelector('.app__form-label');
 const btnCancelTask = document.querySelector('.app__form-footer__button--cancel');
+const btnDeleteTask = document.querySelector('.app__form-footer__button--delete');
 const btnsaveTask = document.querySelector('.app__form-footer__button--confirm');
 const textarea = document.querySelector('.app__form-textarea');
 const ulTasks = document.querySelector('.app__section-task-list');
@@ -85,14 +86,17 @@ function createTask(task) {
         button.setAttribute('disabled', 'disabled');
     } 
     
-    button.onclick = () => {
+    button.addEventListener('click', (event) => {
+        // Para evitar que o evento de clique no botão seja propagado para o li
+        event.stopPropagation();
+
         formLabel.textContent = 'Editando tarefa';
         textarea.value = task.description;
         
         setId(task.id);
 
         formAddTask.classList.remove('hidden');
-    };
+    });
 
     li.append(svg);
     li.append(p);
@@ -139,6 +143,16 @@ btnAddTask.addEventListener('click', () => {
 });
 
 btnCancelTask.addEventListener('click', clearForm);
+btnDeleteTask.addEventListener('click', () => {
+    // Mudar condição, assim não será possível deletar tarefa sem estar selecionada
+    if (!selectedTask) {
+        clearForm();
+    }
+    tasks = tasks.filter(task => task.id !== selectedTask.id);
+    updateTasks();
+    pDescriptionTask.textContent = '';
+    clearForm();
+});
 
 formAddTask.addEventListener('submit', (event) => {
     event.preventDefault();
