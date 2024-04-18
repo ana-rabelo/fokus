@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function createTask(task) {
     const li = document.createElement('li');
     li.classList.add('app__section-task-list-item');    
-    
+
     const svg = document.createElement('svg');
     svg.innerHTML = `
         <svg class="app__section-task-icon-status" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -78,6 +78,11 @@ function createTask(task) {
     button.appendChild(imageBtn);
     button.classList.add('app_button-edit');
 
+    if (task.completed) {
+        li.classList.add('app__section-task-list-item-complete');
+        button.setAttribute('disabled', 'disabled');
+    }
+    
     button.onclick = () => {
         formLabel.textContent = 'Editando tarefa';
         textarea.value = task.description;
@@ -92,23 +97,25 @@ function createTask(task) {
     li.append(button);
 
     li.onclick = () => {
-        document.querySelectorAll('.app__section-task-list-item-active')
-        .forEach(elemento => {
-            elemento.classList.remove('app__section-task-list-item-active')
-        })
+        if (!task.completed) {
+            document.querySelectorAll('.app__section-task-list-item-active')
+            .forEach(elemento => {
+                elemento.classList.remove('app__section-task-list-item-active')
+            })
 
-        // Se a tarefa clicada for a mesma que já está selecionada, deseleciona
-        if (selectedTask == task) {
-            pDescriptionTask.textContent = '';
-            selectedTask = null;
-            liSelectedTask = null;
-            return;
+            // Se a tarefa clicada for a mesma que já está selecionada, deseleciona
+            if (selectedTask == task) {
+                pDescriptionTask.textContent = '';
+                selectedTask = null;
+                liSelectedTask = null;
+                return;
+            }
+
+            selectedTask = task;
+            liSelectedTask = li;
+            pDescriptionTask.textContent = task.description;
+            li.classList.add('app__section-task-list-item-active');
         }
-
-        selectedTask = task;
-        liSelectedTask = li;
-        pDescriptionTask.textContent = task.description;
-        li.classList.add('app__section-task-list-item-active');
     }
         
     ulTasks.append(li);
@@ -117,8 +124,6 @@ function createTask(task) {
 document.addEventListener('focoFinalizado', () => {
     if (selectedTask && liSelectedTask){
         liSelectedTask.classList.remove('app__section-task-list-item-active');
-        liSelectedTask.classList.add('app__section-task-list-item-complete');
-        liSelectedTask.querySelector('button').setAttribute('disabled', 'disabled');
         setCompleted(selectedTask.id);
     }
 });
@@ -153,6 +158,7 @@ formAddTask.addEventListener('submit', (event) => {
         não têm tempo de expiração, os dados do sessionStorage são apagados quando a sessão da página termina */
             
         createTask(task);
+        updateTasks();
         clearForm();
         
     } else {
