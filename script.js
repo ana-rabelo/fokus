@@ -21,7 +21,7 @@ const bannerTitulo = document.querySelector('.app__title');
 
 /* Elemento HTML que irá aparecer o temporizador */
 const timer = document.getElementById('timer');
-const timerFoco = 1500;
+const timerFoco = 2;
 const timerDescansoCurto = 300;
 const timerDescansoLongo = 900;
 let tempoDecorridoEmSegundos = timerFoco;
@@ -128,6 +128,10 @@ function iniciarOuPausar() {
 const contagemRegressiva = () => {
     if(tempoDecorridoEmSegundos <= 0){
         beep.play();
+        if (htmlContexto.getAttribute('data-contexto') === 'foco') {
+            const eventoFocoFinalizado = new CustomEvent('focoFinalizado');
+            document.dispatchEvent(eventoFocoFinalizado);
+        }
         parar();
         return;
     }
