@@ -6,6 +6,8 @@ const btnsaveTask = document.querySelector('.app__form-footer__button--confirm')
 const textarea = document.querySelector('.app__form-textarea');
 const ulTasks = document.querySelector('.app__section-task-list');
 const pDescriptionTask = document.querySelector('.app__section-active-task-description');
+const btnClearTasks = document.querySelector('#btn-remover-concluidas');
+const btnClearAll = document.querySelector('#btn-remover-todas');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 let selectedTask = null;
@@ -81,7 +83,7 @@ function createTask(task) {
     if (task.completed) {
         li.classList.add('app__section-task-list-item-complete');
         button.setAttribute('disabled', 'disabled');
-    }
+    } 
     
     button.onclick = () => {
         formLabel.textContent = 'Editando tarefa';
@@ -170,3 +172,10 @@ formAddTask.addEventListener('submit', (event) => {
     }
 });
 
+const clearTasks = (onlyCompleted) => {
+    tasks = onlyCompleted ? tasks.filter(task => !task.completed) : [];
+    updateTasks();
+}
+
+btnClearTasks.onclick = () => clearTasks(true);
+btnClearAll.onclick = () => clearTasks(false);

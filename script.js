@@ -21,7 +21,7 @@ const bannerTitulo = document.querySelector('.app__title');
 
 /* Elemento HTML que irá aparecer o temporizador */
 const timer = document.getElementById('timer');
-const timerFoco = 2;
+const timerFoco = 1500;
 const timerDescansoCurto = 300;
 const timerDescansoLongo = 900;
 let tempoDecorridoEmSegundos = timerFoco;
